@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@NamedQuery(name = "findEmployeeAddresses", query = "from Address where employee = :e")
 @Entity
 public class Address {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
