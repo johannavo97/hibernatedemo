@@ -29,7 +29,13 @@ public class MainRunner {
         log.info(employeeService.findEmployeeSalaryGreaterThan(100000).toString());
         log.info(Boolean.toString(employeeService.deleteEmployee(employeeService.getEmployeeById(1))));
         log.info(employeeService.findEmployeeAddresses(e1).toString());
-
+        log.info(employeeService.EmployeeIdAndName().toString());
+        Address a5 = new Address("555 st", "", "seattle", 98109, new Employee());
+        employeeService.addAddress(a5,3);
+        log.info(employeeService.findEmployeeAddresses(e1).toString());
+        Address a6 = new Address("252 st", "", "seattle", 98109, new Employee());
+        employeeService.addAddress(a6,2);
+        log.info(employeeService.findEmployeeAddresses(new Employee(2,"",12)).toString());
 
     } // main method
 } // MainRunner

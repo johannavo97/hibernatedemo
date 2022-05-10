@@ -4,6 +4,8 @@ import com.hibernate.dao.EmployeeI;
 import com.hibernate.models.Address;
 import com.hibernate.models.Employee;
 import com.hibernate.util.HibernateUtil;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -12,9 +14,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.hibernate.transform.Transformers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Log
 public class EmployeeService implements EmployeeI {
     @Override
@@ -162,7 +166,7 @@ public class EmployeeService implements EmployeeI {
         Transaction tx = null;
         try {
            tx = s.beginTransaction();
-           Query<Address> q = s.createNamedQuery("findEmployeeAddresses", Address.class);
+           TypedQuery<Address> q = s.createNamedQuery("findEmployeeAddresses");
            q.setParameter("e", e);
            return q.getResultList();
 
@@ -172,6 +176,49 @@ public class EmployeeService implements EmployeeI {
             s.close();
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public Map<Integer, String> EmployeeIdAndName() {
+        String hql = "select e.id as id, e.name as name, a.city as city from Employee e join Address as a";
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Map<Integer, String> employeeMap = null;
+        try {
+         employeeMap = s.createQuery(hql, Tuple.class).getResultStream()
+                 .collect(
+                         Collectors.toMap(
+                                 tuple -> ((Number) tuple.get("id")).intValue(),
+                                 tuple -> ((String) tuple.get("name"))
+                         )
+                 );
+
+         List<Object[]> objectList = s.createQuery(hql).list();
+            for(Object[] c: objectList)
+            System.out.println(Arrays.toString(c));
+
+        } catch (HibernateException exception) {
+            exception.printStackTrace();
+        } finally {
+            s.close();
+        }
+        return employeeMap;
+    }
+
+    @Override
+    public void addAddress(Address a, int emp_id) {
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = s.beginTransaction();
+            a.setEmployee(s.get(Employee.class,emp_id));
+            s.merge(a);
+            tx.commit();
+        } catch (HibernateException exception){
+            exception.printStackTrace();
+            if(tx!=null) tx.rollback();
+        } finally {
+            s.close();
+        }
     }
 
 
