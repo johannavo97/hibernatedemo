@@ -22,6 +22,7 @@
 
         <mapping class="com.hibernate.models.Employee" />
         <mapping class="com.hibernate.models.Address" />
+        <mapping class="com.hibernate.models.Project" />
 
 
     </session-factory>

@@ -2,13 +2,21 @@ package com.hibernate;
 
 import com.hibernate.models.Address;
 import com.hibernate.models.Employee;
+import com.hibernate.models.Project;
 import com.hibernate.services.EmployeeService;
+import com.hibernate.services.ProjectService;
+import com.hibernate.util.HibernateUtil;
 import lombok.extern.java.Log;
+import org.hibernate.Session;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Log
 public class MainRunner {
     public static void main(String[] args) {
         EmployeeService employeeService = new EmployeeService();
+        ProjectService projectService = new ProjectService();
 
         Employee e1 = new Employee("jafer", 70000);
         Address a1 = new Address("123 st", "", "plano", 75000, e1);
@@ -35,7 +43,16 @@ public class MainRunner {
         log.info(employeeService.findEmployeeAddresses(e1).toString());
         Address a6 = new Address("252 st", "", "seattle", 98109, new Employee());
         employeeService.addAddress(a6,2);
-        log.info(employeeService.findEmployeeAddresses(new Employee(2,"",12)).toString());
+        Employee someone = new Employee("",12);
+        someone.setId(2);
+        log.info(employeeService.findEmployeeAddresses(someone).toString());
+
+
+        Project p = new Project("Hibernate");
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        projectService.addProjectAndEmployee(p);
+
+
 
     } // main method
 } // MainRunner
