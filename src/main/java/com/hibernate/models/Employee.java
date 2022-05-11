@@ -23,7 +23,13 @@ public class Employee {
     @NonNull
     double salary;
 
+    public Employee(int id, @NonNull String name, @NonNull double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "employee_project",

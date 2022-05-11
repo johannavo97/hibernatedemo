@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Log
 public class MainRunner {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         EmployeeService employeeService = new EmployeeService();
         ProjectService projectService = new ProjectService();
         ItemService itemService = new ItemService();
@@ -47,12 +47,30 @@ public class MainRunner {
         someone.setId(2);
         log.info(employeeService.findEmployeeAddresses(someone).toString());
 
-
-        Project p = new Project("Hibernate");
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        projectService.addProjectAndEmployee(p);
         Item i = new Item("Cookies", new ItemDescription(10,10,30));
         itemService.createItem(i);
+
+
+        Project p1 = new Project("Hibernate");
+        Project p2 = new Project("Java");
+        Project p3 = new Project("Spring Boot");
+        projectService.createProject(p1);
+        projectService.createProject(p2);
+        projectService.createProject(p3);
+
+        projectService.addEmployeeToProject(p1.getId(),2);
+        projectService.addEmployeeToProject(p1.getId(),3);
+        projectService.addEmployeeToProject(p2.getId(),3);
+
+        log.info("Native:" + projectService.getAllEmployeesInProject(p2).toString());
+
+        log.info(projectService.getAllEmployeesInProjectHql(p2).toString());
+        // in case using h2 db sleep the application to access db data
+        // Thread.sleep(10000);
+
+
+
+
 
 
 

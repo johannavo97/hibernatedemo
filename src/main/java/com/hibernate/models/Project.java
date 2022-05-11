@@ -21,10 +21,15 @@ public class Project {
     String name;
     @NonNull
 
-
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToMany(mappedBy = "projects", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(mappedBy = "projects", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     Set<Employee> employees = new LinkedHashSet<>();
+
+    public void addEmployee(Employee employee){
+        employees.add(employee);
+        employee.getProjects().add(this);
+    }
 
 
 }
