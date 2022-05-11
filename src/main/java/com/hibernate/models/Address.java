@@ -12,7 +12,8 @@ import lombok.experimental.FieldDefaults;
 @NamedQuery(name = "findEmployeeAddresses", query = "from Address where employee = :e")
 @Entity
 public class Address {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     @NonNull
     @Column(nullable = false, length = 150)
@@ -27,7 +28,14 @@ public class Address {
     @Column(nullable = false)
     int zipCode;
     @NonNull
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(nullable = false)
     Employee employee;
 
+    public Address(@NonNull String addressOne, @NonNull String addressTwo, @NonNull String city, @NonNull int zipCode) {
+        this.addressOne = addressOne;
+        this.addressTwo = addressTwo;
+        this.city = city;
+        this.zipCode = zipCode;
+    }
 }

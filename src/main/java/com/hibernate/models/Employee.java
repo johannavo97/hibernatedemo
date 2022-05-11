@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -27,6 +28,18 @@ public class Employee {
         this.id = id;
         this.name = name;
         this.salary = salary;
+    }
+    @ToString.Exclude
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    List<Address> addresses = new java.util.ArrayList<>();
+
+    public void addAddress(Address a){
+        addresses.add(a);
+        a.setEmployee(this);
+    }
+    public void removeAddress(Address a){
+        addresses.remove(a);
+        a.setEmployee(null);
     }
 
     @EqualsAndHashCode.Exclude

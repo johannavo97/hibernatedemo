@@ -68,7 +68,13 @@ public class MainRunner {
         // in case using h2 db sleep the application to access db data
         // Thread.sleep(10000);
 
+        Employee employeeJafer = new Employee("jafer", 75555);
+        Address addressJafer = new Address("545585 st", "apt 1234", "plano", 75000);
+        Address addressJaferTwo = new Address("4555444 st", "apt 6565", "dallas", 76000);
 
+        employeeJafer.addAddress(addressJafer);
+        employeeJafer.addAddress(addressJaferTwo);
+        employeeService.createEmployee(employeeJafer);
 
 
 
