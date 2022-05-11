@@ -23,6 +23,9 @@
         <mapping class="com.hibernate.models.Employee" />
         <mapping class="com.hibernate.models.Address" />
         <mapping class="com.hibernate.models.Project" />
+        <mapping class="com.hibernate.models.Item" />
+        <mapping class="com.hibernate.models.ItemDescription" />
+
 
 
     </session-factory>

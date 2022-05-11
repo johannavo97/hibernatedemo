@@ -1,9 +1,8 @@
 package com.hibernate;
 
-import com.hibernate.models.Address;
-import com.hibernate.models.Employee;
-import com.hibernate.models.Project;
+import com.hibernate.models.*;
 import com.hibernate.services.EmployeeService;
+import com.hibernate.services.ItemService;
 import com.hibernate.services.ProjectService;
 import com.hibernate.util.HibernateUtil;
 import lombok.extern.java.Log;
@@ -17,6 +16,7 @@ public class MainRunner {
     public static void main(String[] args) {
         EmployeeService employeeService = new EmployeeService();
         ProjectService projectService = new ProjectService();
+        ItemService itemService = new ItemService();
 
         Employee e1 = new Employee("jafer", 70000);
         Address a1 = new Address("123 st", "", "plano", 75000, e1);
@@ -51,6 +51,8 @@ public class MainRunner {
         Project p = new Project("Hibernate");
         Session s = HibernateUtil.getSessionFactory().openSession();
         projectService.addProjectAndEmployee(p);
+        Item i = new Item("Cookies", new ItemDescription(10,10,30));
+        itemService.createItem(i);
 
 
 
