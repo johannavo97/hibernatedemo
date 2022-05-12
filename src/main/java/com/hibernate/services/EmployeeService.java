@@ -107,7 +107,8 @@ public class EmployeeService implements EmployeeI {
 
         try {
             tx = s.beginTransaction();
-            s.delete(e);
+            if(e.getId() == 0) throw new RuntimeException("ID equals zero");
+            s.remove(e);
             tx.commit();
             return true;
         } catch (HibernateException exception) {
